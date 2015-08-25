@@ -1,4 +1,5 @@
 //Squirrel puppet script
+//Testing code
 
 var This = new Avatar("squirrel");
 
