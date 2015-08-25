@@ -1,0 +1,183 @@
+//Squirrel puppet script
+
+var This = new Avatar("squirrel");
+
+var pause = false;
+
+This.Joints = 10;
+
+This.angConstraint = [
+    
+    [-180,180], [-180,180], [-180,180], [-180,180], [-180,180],
+    
+    [-180,180], [-180,180], [-180,180], [-180,180], [-180,180]
+    
+];
+
+This.setConstraints = function( arr ) {
+    
+    if ( Array.isArray(arr)===false ) {
+        
+        return -1; // Not array
+    
+    }
+    
+    if ( arr.length === 0 ) {
+        
+        return -2; // Empty Array
+    
+    }
+    
+    var sz = min(arr.lenth, This.Joints); // this.Joints
+    
+    for (var i=0; i<sz; i++) {
+
+        var tuple = arr[i];
+
+        if ( Array.isArray(tuple) && tuple.length===2 ) {
+
+            if ( tuple[0] >= tuple[1] ) {
+
+                return -3; // Inverted range
+
+            }
+
+            This.angConstraint[i] = tuple;
+
+        } else {
+
+            return -4; // Not array range with 2 values
+
+        }
+
+    }
+
+    return 0;
+
+};
+
+This.NewRotate = function(i, delta) {
+
+    var ang = This.getAngle(i);
+
+    var ang2 = ang + delta;
+
+    var mn = This.angConstraint[i][0];
+
+    var mx = This.angConstraint[i][1];
+
+    if ( ang2>=mn && ang2<=mx ) {
+
+        This.rotate(i, delta);
+
+    }
+
+};
+
+This.drawPivots = function(x,y) {
+
+    //matrix(0.24474245,0,0,0.24474245,-111.29137,-31.159929)
+
+    var sx = 0.24474245;
+
+    var sy = 0.24474245;
+
+    var dx = -111.29137;
+
+    var dy = -31.159929;
+
+    This.draw(x,y);
+
+    fill(255, 196, 0);
+
+    for (var i=0; i<This.Joints; i++) {
+
+        switch (i) {
+
+            case 2: case 4: // codos
+
+            case 7: case 9:
+
+                pushMatrix();
+
+                var xg = sx * This.p[i-1].x + dx + x - 200;
+
+                var yg = sy * This.p[i-1].y + dy + y - 200;
+
+                translate(xg,yg);
+
+                rotate(This.getAngle(i-1));
+
+                translate(-xg,-yg);
+
+        }
+
+        ellipse(sx*This.p[i].x+dx+x-200, sy*This.p[i].y+dy+y-200, 10, 10);
+
+        switch (i) {
+
+            case 2: case 4: // codos
+
+            case 7: case 9:
+
+                popMatrix();
+
+        }
+
+    }
+
+};
+
+//This.scale(0.75);
+
+//noCursor();
+
+frameRate(15);
+
+smooth();
+
+//var st = This.setConstraints([[1,2,3]]);
+
+//println(st);
+
+var st = This.setConstraints( [  // squirrel
+
+    [-20,20], [-5,140], [0,85], [-140,5], [-85,0],
+
+    [-10,60], [0,35], [-40,0], [-35,0], [0,40],
+
+] );
+
+var draw = function()
+
+{
+
+    fill(127, 165, 176, 99);
+
+    rect(0,0,400,400);
+
+    for (var i=0; i<This.Joints; i++) {
+
+        This.NewRotate(i,random(-9,9));
+
+    }
+
+    This.drawPivots(mouseX,mouseY);
+
+};
+
+var mouseClicked = function() {
+
+    if (pause) {
+
+        loop();
+
+    } else {
+
+        noLoop();
+
+    }
+
+    pause = !pause;
+
+};
