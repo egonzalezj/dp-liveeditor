@@ -1,4 +1,4 @@
-//Squirrel puppet script
+//Panther puppet script
 //Testing code
 
 var This = new Avatar("panther");
