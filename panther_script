@@ -77,15 +77,15 @@ This.NewRotate = function(i, delta) {
 
 This.drawPivots = function(x,y) {
 
-    //matrix(0.24474245,0,0,0.24474245,-111.29137,-31.159929)
-
-    var sx = 0.24474245;
-
-    var sy = 0.24474245;
-
-    var dx = -111.29137;
-
-    var dy = -31.159929;
+    //matrix(0.63255287,0,0,0.63255287,-11.570506,-36.480967)
+    
+    var sx = 0.63255287;
+    
+    var sy = 0.63255287;
+    
+    var dx = -11.570506;
+    
+    var dy = -36.480967;
 
     This.draw(x,y);
 
