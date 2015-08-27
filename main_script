@@ -4,7 +4,8 @@
 // ver. 0.2, Agosto 2015
 
 var name = "squirrel";
-var This = new Avatar(name);
+var av = new Avatar(name);;
+var This = av; // emulate Avatar object class
 var pause = false;
 
 This.Joints = 10;
@@ -91,11 +92,11 @@ var draw = function()
   fill(127, 165, 176, 99);
   rect(0,0,400,400);
 
-  for (var i=0; i<This.Joints; i++) {
-    This.NewRotate(i,random(-9,9));
+  for (var i=0; i < av.Joints; i++) {
+    av.NewRotate(i,random(-9,9)); // av.rotate
   }
 
-  This.drawPivots(mouseX,mouseY);
+  av.drawPivots(mouseX,mouseY);
 };
 
 var mouseClicked = function() {
