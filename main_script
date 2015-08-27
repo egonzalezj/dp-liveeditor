@@ -1,9 +1,9 @@
 // Pruebas API Digital Puppet
 // panther & squirrel
 // M-Learning Lab, IT Chihuahua
-// Agosto 2015
+// ver. 0.2, Agosto 2015
 
-var name = "panther";
+var name = "squirrel";
 var This = new Avatar(name);
 var pause = false;
 
@@ -47,34 +47,20 @@ This.NewRotate = function(i, delta) {
 };
 
 This.drawPivots = function(x,y) {
-  var sx, sy, dx, dy;
-  if ( name === "squirrel" ) {
-    //matrix(0.24474245,0,0,0.24474245,-111.29137,-31.159929) // squirrel
-    sx = 0.24474245;
-    sy = 0.24474245;
-    dx = -111.29137;
-    dy = -31.159929;
-  } else if ( name.indexOf("pant") === 0 ) {
-    //matrix(0.63255287,0,0,0.63255287,-11.570506,-36.480967)
-    sx = 0.63255287; // panther
-    sy = 0.63255287;
-    dx = -11.570506;
-    dy = -36.480967;
-  }
   This.draw(x,y);
   fill(255, 196, 0);
   for (var i=0; i<This.Joints; i++) {
     switch (i) {
       case 2: case 4: // codos
-      case 7: case 9:
+      case 7: case 9: // rodillas
       pushMatrix();
-      var xg = sx * This.p[i-1].x + dx + x - 200;
-      var yg = sy * This.p[i-1].y + dy + y - 200;
+      var xg = This.p[i-1].x + x - 200;
+      var yg = This.p[i-1].y + y - 200;
       translate(xg,yg);
       rotate(This.getAngle(i-1));
       translate(-xg,-yg);
     }
-    ellipse(sx*This.p[i].x+dx+x-200, sy*This.p[i].y+dy+y-200, 10, 10);
+    ellipse(This.p[i].x+x-200, This.p[i].y+y-200, 10, 10);
     switch (i) {
       case 2: case 4: // codos
       case 7: case 9:
@@ -83,12 +69,9 @@ This.drawPivots = function(x,y) {
   }
 };
 
-//This.scale(0.75);
-//noCursor();
+noCursor();
 frameRate(15);
 smooth();
-//var st = This.setConstraints([[1,2,3]]);
-//println(st);
 
 var st;
 if ( name === "squirrel" ) {
@@ -98,7 +81,7 @@ if ( name === "squirrel" ) {
   ]);
 } else if ( name.indexOf("pant") === 0 ) {
   st = This.setConstraints([
-    [-20,20], [-5,140], [0,80], [-140,5], [0,80],
+    [-20,20], [-5,140], [0,80], [-140,5], [0,80], // panther
     [-85,5], [-10,15], [-10,15], [-10,10], [-20,15]
   ]);
 }
